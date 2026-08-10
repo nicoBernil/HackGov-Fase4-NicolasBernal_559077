@@ -1,0 +1,52 @@
+### HackGov - testes rapidos da API
+### Na IntelliJ ou VS Code (extensao REST Client), clique em "Send Request"
+### acima de cada bloco. Rode a aplicacao antes.
+
+### 1) Cadastrar um cidadao
+POST http://localhost:8080/api/cadastro
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva",
+  "cpf": "12345678901",
+  "email": "maria@email.com",
+  "senha": "minhasenha"
+}
+
+### 2) Login do cidadao
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "maria@email.com",
+  "senha": "minhasenha"
+}
+
+### 3) Login do gestor de exemplo (criado automaticamente)
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "gestor@hackgov.gov.br",
+  "senha": "gestor123"
+}
+
+### 4) Teste de erro: senha errada (deve retornar mensagem de erro)
+POST http://localhost:8080/api/login
+Content-Type: application/json
+
+{
+  "email": "maria@email.com",
+  "senha": "senhaerrada"
+}
+
+### 5) Teste de validacao: campos faltando (deve listar os erros)
+POST http://localhost:8080/api/cadastro
+Content-Type: application/json
+
+{
+  "nome": "",
+  "cpf": "123",
+  "email": "email-invalido",
+  "senha": "123"
+}

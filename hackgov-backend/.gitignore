@@ -1,0 +1,15 @@
+# Compilados do Maven
+/target/
+
+# Arquivos da IntelliJ
+.idea/
+*.iml
+
+# Arquivos do Eclipse / VS Code
+.classpath
+.project
+.settings/
+.vscode/
+
+# Logs
+*.log

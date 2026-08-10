@@ -1,0 +1,18 @@
+# ---------- Backend (Java / Maven / IntelliJ) ----------
+hackgov-backend/target/
+hackgov-backend/.idea/
+*.iml
+*.class
+
+# ---------- Frontend (Node / React / Vite) ----------
+hackgov-frontend/node_modules/
+hackgov-frontend/dist/
+hackgov-frontend/.vite/
+
+# ---------- Sistema operacional ----------
+.DS_Store
+Thumbs.db
+
+# ---------- Variáveis de ambiente / segredos ----------
+.env
+.env.local

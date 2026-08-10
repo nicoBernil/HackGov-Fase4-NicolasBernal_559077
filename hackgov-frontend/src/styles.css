@@ -1,0 +1,224 @@
+
+
+:root {
+  --azul: #0b4f8a;
+  --azul-escuro: #08365e;
+  --azul-claro: #e8f1fa;
+  --texto: #1c2a36;
+  --texto-suave: #5b6b7a;
+  --borda: #d8e0e8;
+  --fundo: #f3f6f9;
+  --verde: #1f7a4d;
+  --verde-fundo: #e4f4ec;
+  --vermelho: #b3261e;
+  --vermelho-fundo: #fbe9e8;
+  --raio: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  color: var(--texto);
+  background: var(--fundo);
+}
+
+.pagina { min-height: 100vh; display: flex; flex-direction: column; }
+
+
+.topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--azul);
+  color: #fff;
+}
+.marca { font-weight: 700; font-size: 20px; letter-spacing: 0.5px; }
+.topo-sub { font-size: 14px; opacity: 0.9; }
+.topo-direita { display: flex; align-items: center; gap: 16px; }
+
+.botao-link {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.botao-link:hover { background: rgba(255, 255, 255, 0.12); }
+
+.conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.conteudo-largo {
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.cartao {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 32px;
+  box-shadow: 0 8px 30px rgba(11, 79, 138, 0.08);
+}
+
+.conteudo-largo .cartao { max-width: none; }
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--azul);
+}
+.cartao h1 { margin: 6px 0 4px; font-size: 26px; }
+.cartao h2 { margin: 6px 0 18px; font-size: 21px; }
+.subtitulo { margin: 0 0 20px; color: var(--texto-suave); font-size: 15px; }
+
+/* ----------------------------- Abas ----------------------------- */
+.abas {
+  display: flex;
+  gap: 6px;
+  background: var(--azul-claro);
+  padding: 4px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.aba {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--azul);
+  font-weight: 600;
+}
+.aba.ativa { background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
+
+/* -------------------------- Formulario -------------------------- */
+.formulario { display: flex; flex-direction: column; }
+.formulario label {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 12px 0 6px;
+  color: var(--texto);
+}
+.formulario input,
+.formulario textarea,
+.formulario select {
+  padding: 11px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+  width: 100%;
+}
+.formulario input:focus,
+.formulario textarea:focus,
+.formulario select:focus { border-color: var(--azul); }
+.formulario textarea { resize: vertical; }
+
+.linha-dupla { display: flex; gap: 12px; }
+.linha-dupla > div { flex: 1; }
+
+.botao {
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: var(--azul);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.botao:hover { background: var(--azul-escuro); }
+.botao:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.dica { margin: 14px 0 0; font-size: 12.5px; color: var(--texto-suave); text-align: center; }
+
+/* --------------------------- Alertas --------------------------- */
+.alerta { padding: 12px 14px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
+.alerta-topo { width: 100%; }
+.alerta-sucesso { background: var(--verde-fundo); color: var(--verde); border: 1px solid #bfe3cf; }
+.alerta-erro { background: var(--vermelho-fundo); color: var(--vermelho); border: 1px solid #f0c5c2; }
+
+/* ------------------------- Area cidadao ------------------------- */
+.grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+.vazio { color: var(--texto-suave); font-size: 14px; }
+
+.lista { display: flex; flex-direction: column; gap: 12px; }
+.item {
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 14px;
+  background: #fcfdfe;
+}
+.item-topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.item-protocolo { font-size: 12px; color: var(--azul); font-weight: 600; margin-top: 2px; }
+.item-meta { font-size: 13.5px; color: var(--texto); margin-top: 6px; }
+.item-data { font-size: 12.5px; color: var(--texto-suave); margin-top: 4px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--azul-claro);
+  color: var(--azul);
+  white-space: nowrap;
+}
+
+/* -------------------------- Area gestor -------------------------- */
+.resumo { display: flex; gap: 16px; margin-bottom: 24px; width: 100%; }
+.cartao-num {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.num { font-size: 30px; font-weight: 700; color: var(--azul); }
+.num-rotulo { font-size: 13px; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.5px; }
+
+.tabela-rolavel { overflow-x: auto; }
+.tabela { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabela th, .tabela td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borda); }
+.tabela th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--texto-suave); }
+.tabela tbody tr:hover { background: var(--azul-claro); }
+
+/* ---------------------------- Rodape ---------------------------- */
+.rodape { margin-top: 24px; font-size: 13px; color: var(--texto-suave); }
+
+/* ------------------------- Responsivo ------------------------- */
+@media (max-width: 760px) {
+  .grade { grid-template-columns: 1fr; }
+  .resumo { flex-wrap: wrap; }
+}
