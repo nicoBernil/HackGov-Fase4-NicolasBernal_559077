@@ -1,6 +1,13 @@
 import { useState, useEffect } from 'react'
 import { listarTodasSolicitacoes } from '../api/hackgovApi'
 
+// Mapeia cada nivel de prioridade para uma classe CSS (cor do badge)
+const CLASSE_PRIORIDADE = {
+  ALTA: 'prioridade-alta',
+  MEDIA: 'prioridade-media',
+  BAIXA: 'prioridade-baixa',
+}
+
 function AreaGestor({ usuario, aoSair }) {
   const [solicitacoes, setSolicitacoes] = useState([])
   const [mensagem, setMensagem] = useState(null)
@@ -73,6 +80,7 @@ function AreaGestor({ usuario, aoSair }) {
                     <th>Titulo</th>
                     <th>Cidadao</th>
                     <th>Categoria</th>
+                    <th>Prioridade</th>
                     <th>Status</th>
                     <th>Aberta em</th>
                   </tr>
@@ -84,6 +92,11 @@ function AreaGestor({ usuario, aoSair }) {
                       <td>{s.titulo}</td>
                       <td>{s.cidadao}</td>
                       <td>{s.categoria}</td>
+                      <td>
+                        <span className={`badge-prioridade ${CLASSE_PRIORIDADE[s.prioridade] || ''}`}>
+                          {s.prioridade}
+                        </span>
+                      </td>
                       <td><span className="badge">{s.status}</span></td>
                       <td>{s.dataAbertura}</td>
                     </tr>
