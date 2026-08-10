@@ -230,4 +230,4 @@ Assista à demonstração funcional do projeto: **[link do vídeo pitch]**
 
 ## 📄 Licença
 
-*(definir licença do projeto, ex.: MIT, ou indicar que é um projeto acadêmico sem licença de uso comercial)*
+É um projeto acadêmico sem licença de uso comercial
