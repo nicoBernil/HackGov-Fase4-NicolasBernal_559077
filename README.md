@@ -3,8 +3,8 @@
 > Plataforma de canais digitais para registro, triagem inteligente e acompanhamento de ocorrências junto a órgãos públicos, com rastreabilidade criptográfica das transições de status.
 
 **Autor:** Nicolas Bernal — RM 559077
-**Cidade:** *(preencher)*
-**Projeto:** Enterprise Challenge — HackGov (parceria EGESP) — FIAP, Fase 4
+**Cidade:** Rio de Janeiro
+**Projeto:** Enterprise Challenge — HackGov — FIAP, Fase 4
 
 ---
 
