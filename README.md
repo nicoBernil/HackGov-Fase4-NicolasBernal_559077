@@ -224,7 +224,7 @@ Assista à demonstração funcional do projeto: **[link do vídeo pitch]**
 
 | Nome | RM | Cidade |
 |---|---|---|
-| Nicolas Bernal | 559077 | *(preencher)* |
+| Nicolas Bernal | 559077 | Rio de Janeiro |
 
 ---
 
