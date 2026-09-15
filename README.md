@@ -145,8 +145,6 @@ spring.datasource.password=<sua_senha>
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 ```
 
-> ⚠️ **Nunca commite credenciais reais no Git.** Em um ambiente real, mova esses valores para variáveis de ambiente.
-
 ### 4. Rodar o backend
 
 ```bash
