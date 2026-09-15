@@ -214,12 +214,6 @@ Apenas a "impressão digital técnica" (hash) da transição seria registrada �
 
 ---
 
-## 🎥 Vídeo Pitch
-
-Assista à demonstração funcional do projeto: **[link do vídeo pitch]**
-
----
-
 ## 👤 Equipe
 
 | Nome | RM | Cidade |
