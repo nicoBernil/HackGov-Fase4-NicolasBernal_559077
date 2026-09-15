@@ -1,6 +1,7 @@
 package br.com.fiap.hackgov.service;
 
 import br.com.fiap.hackgov.dto.CategoriaResponse;
+import br.com.fiap.hackgov.dto.ClassificacaoIaResponse;
 import br.com.fiap.hackgov.dto.NovaSolicitacaoRequest;
 import br.com.fiap.hackgov.dto.SolicitacaoResponse;
 import br.com.fiap.hackgov.exception.RegraNegocioException;
@@ -28,15 +29,18 @@ public class SolicitacaoService {
     private final CategoriaRepository categoriaRepository;
     private final StatusSolicitacaoRepository statusRepository;
     private final UsuarioRepository usuarioRepository;
+    private final IaClassificacaoService iaClassificacaoService;
 
     public SolicitacaoService(SolicitacaoRepository solicitacaoRepository,
                               CategoriaRepository categoriaRepository,
                               StatusSolicitacaoRepository statusRepository,
-                              UsuarioRepository usuarioRepository) {
+                              UsuarioRepository usuarioRepository,
+                              IaClassificacaoService iaClassificacaoService) {
         this.solicitacaoRepository = solicitacaoRepository;
         this.categoriaRepository = categoriaRepository;
         this.statusRepository = statusRepository;
         this.usuarioRepository = usuarioRepository;
+        this.iaClassificacaoService = iaClassificacaoService;
     }
 
     // Lista as categorias para o formulario.
@@ -48,9 +52,23 @@ public class SolicitacaoService {
     }
 
     /**
+     * NOVO: usado pelo front-end enquanto o cidadao digita a descricao, para
+     * sugerir categoria e prioridade antes mesmo de enviar o formulario. O
+     * cidadao ainda pode corrigir a categoria manualmente no <select>.
+     */
+    public ClassificacaoIaResponse classificarComIa(String descricao) {
+        List<Categoria> categorias = categoriaRepository.findAllByOrderByNome();
+        return iaClassificacaoService.classificar(descricao, categorias);
+    }
+
+    /**
      * Cria uma nova solicitacao. (US03)
      * - valida categoria e cidadao;
-     * - inicia com status "Recebido" e prioridade "MEDIA";
+     * - inicia com status "Recebido";
+     * - a PRIORIDADE agora e definida pela IA a partir da descricao (antes
+     *   era sempre fixa em "MEDIA"), com um Plano B por palavras-chave caso a
+     *   IA generativa esteja indisponivel - a criacao da solicitacao nunca
+     *   falha por causa disso;
      * - gera um numero de protocolo unico.
      *
      * @Transactional garante que tudo aconteca junto: se algo falhar no meio,
@@ -68,6 +86,17 @@ public class SolicitacaoService {
                 .orElseThrow(() -> new RegraNegocioException(
                         "Status 'Recebido' nao encontrado. Rode o dados_iniciais.sql."));
 
+        // A prioridade e sugerida pela IA a partir do texto da descricao.
+        // Se, por qualquer motivo, a classificacao falhar (rede fora do ar,
+        // resposta inesperada etc.), caimos em "MEDIA" - a solicitacao do
+        // cidadao NUNCA deixa de ser criada por causa da IA.
+        String prioridade;
+        try {
+            prioridade = classificarComIa(dados.descricao()).prioridadeSugerida();
+        } catch (Exception e) {
+            prioridade = "MEDIA";
+        }
+
         Solicitacao s = new Solicitacao();
         s.setTitulo(dados.titulo());
         s.setDescricao(dados.descricao());
@@ -77,7 +106,7 @@ public class SolicitacaoService {
         s.setCategoria(categoria);
         s.setCidadao(cidadao);
         s.setStatus(recebido);
-        s.setPrioridade("MEDIA");
+        s.setPrioridade(prioridade);
         s.setDataAbertura(LocalDateTime.now());
         // O protocolo definitivo precisa do ID, que so existe apos salvar.
         // Por isso colocamos um valor temporario aqui e atualizamos depois.

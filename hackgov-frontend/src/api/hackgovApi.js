@@ -56,6 +56,11 @@ export function listarCategorias() {
   return buscarGet("/categorias");
 }
 
+// NOVO: pede para a IA sugerir categoria + prioridade a partir da descricao.
+export function classificarComIa(descricao) {
+  return enviarPost("/solicitacoes/classificar-ia", { descricao });
+}
+
 // Cria uma nova solicitacao.
 export function criarSolicitacao(dados) {
   return enviarPost("/solicitacoes", dados);

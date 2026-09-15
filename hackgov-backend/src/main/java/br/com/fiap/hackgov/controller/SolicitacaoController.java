@@ -1,6 +1,8 @@
 package br.com.fiap.hackgov.controller;
 
 import br.com.fiap.hackgov.dto.CategoriaResponse;
+import br.com.fiap.hackgov.dto.ClassificacaoIaResponse;
+import br.com.fiap.hackgov.dto.DescricaoRequest;
 import br.com.fiap.hackgov.dto.NovaSolicitacaoRequest;
 import br.com.fiap.hackgov.dto.SolicitacaoResponse;
 import br.com.fiap.hackgov.service.SolicitacaoService;
@@ -28,6 +30,14 @@ public class SolicitacaoController {
     @GetMapping("/categorias")
     public List<CategoriaResponse> listarCategorias() {
         return solicitacaoService.listarCategorias();
+    }
+
+    // POST /api/solicitacoes/classificar-ia -> sugestao de categoria e
+    // prioridade via IA, a partir da descricao digitada. O front-end chama
+    // isto enquanto o cidadao preenche o formulario, ANTES de enviar.
+    @PostMapping("/solicitacoes/classificar-ia")
+    public ResponseEntity<ClassificacaoIaResponse> classificarComIa(@Valid @RequestBody DescricaoRequest dados) {
+        return ResponseEntity.ok(solicitacaoService.classificarComIa(dados.descricao()));
     }
 
     // POST /api/solicitacoes  -> cria uma nova solicitacao

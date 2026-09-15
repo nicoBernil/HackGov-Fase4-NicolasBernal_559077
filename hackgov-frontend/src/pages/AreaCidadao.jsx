@@ -3,6 +3,7 @@ import {
   listarCategorias,
   criarSolicitacao,
   listarSolicitacoesDoCidadao,
+  classificarComIa,
 } from '../api/hackgovApi'
 
 function AreaCidadao({ usuario, aoSair }) {
@@ -22,6 +23,10 @@ function AreaCidadao({ usuario, aoSair }) {
   const [enviando, setEnviando] = useState(false)
   const [mensagem, setMensagem] = useState(null)
 
+  // NOVO: sugestao de categoria + prioridade dada pela IA a partir da descricao
+  const [sugestaoIa, setSugestaoIa] = useState(null)
+  const [classificando, setClassificando] = useState(false)
+
   // Estado de validacao inline: um erro de texto por campo, indexado pelo nome do campo
   const [erros, setErros] = useState({})
 
@@ -37,6 +42,36 @@ function AreaCidadao({ usuario, aoSair }) {
     listarSolicitacoesDoCidadao(usuario.id)
       .then(setSolicitacoes)
       .catch((e) => setMensagem({ tipo: 'erro', texto: e.message }))
+  }
+
+  // NOVO: chama a IA quando o cidadao termina de escrever a descricao (onBlur).
+  // Preenche a categoria automaticamente, mas o cidadao ainda pode trocar
+  // manualmente no <select> antes de enviar.
+  async function sugerirComIa() {
+    if (descricao.trim().length < 10) {
+      setSugestaoIa(null)
+      return
+    }
+    setClassificando(true)
+    try {
+      const sugestao = await classificarComIa(descricao)
+      setSugestaoIa(sugestao)
+      if (sugestao.idCategoriaSugerida) {
+        setIdCategoria(String(sugestao.idCategoriaSugerida))
+        if (erros.idCategoria) {
+          setErros((atual) => {
+            const copia = { ...atual }
+            delete copia.idCategoria
+            return copia
+          })
+        }
+      }
+    } catch {
+      // Se a IA falhar por qualquer motivo, o cidadao so escolhe a categoria manualmente.
+      setSugestaoIa(null)
+    } finally {
+      setClassificando(false)
+    }
   }
 
   // ---- Validacao inline: roda antes de enviar, um erro por campo ----
@@ -104,10 +139,11 @@ function AreaCidadao({ usuario, aoSair }) {
         tipo: 'sucesso',
         texto: `Solicitacao registrada! Protocolo ${nova.protocolo}.`,
       })
-      // limpa o formulario, os erros e atualiza a lista
+      // limpa o formulario, os erros, a sugestao da IA e atualiza a lista
       setTitulo(''); setDescricao(''); setIdCategoria('')
       setLogradouro(''); setBairro(''); setCidade('')
       setErros({})
+      setSugestaoIa(null)
       recarregarLista()
     } catch (erro) {
       setMensagem({ tipo: 'erro', texto: erro.message })
@@ -156,9 +192,21 @@ function AreaCidadao({ usuario, aoSair }) {
                 placeholder="Descreva o problema com detalhes"
                 value={descricao}
                 onChange={atualizarCampo(setDescricao, 'descricao')}
+                onBlur={sugerirComIa}
                 className={erros.descricao ? 'campo-invalido' : ''}
               />
               {erros.descricao && <span className="erro-campo">{erros.descricao}</span>}
+
+              {classificando && (
+                <span className="dica-ia">Analisando a descricao com IA...</span>
+              )}
+              {sugestaoIa && !classificando && (
+                <div className="sugestao-ia">
+                  🤖 <strong>Sugestao da IA:</strong> categoria "{sugestaoIa.categoriaSugerida}",
+                  prioridade <strong>{sugestaoIa.prioridadeSugerida}</strong>.
+                  <div className="sugestao-ia-motivo">{sugestaoIa.justificativa}</div>
+                </div>
+              )}
 
               <label>Categoria</label>
               <select
@@ -172,6 +220,11 @@ function AreaCidadao({ usuario, aoSair }) {
                 ))}
               </select>
               {erros.idCategoria && <span className="erro-campo">{erros.idCategoria}</span>}
+              {sugestaoIa && (
+                <span className="dica-ia">
+                  Preenchido automaticamente pela IA - voce pode trocar se quiser.
+                </span>
+              )}
 
               <label>Logradouro</label>
               <input
