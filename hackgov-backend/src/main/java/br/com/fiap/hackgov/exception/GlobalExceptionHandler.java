@@ -38,4 +38,14 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erros);
     }
+
+    // Controle de acesso (Parte 5): usuario nao autenticado, perfil sem
+    // permissao, ou tentando acessar dado de outra pessoa. Devolve 403
+    // (Forbidden) com a mesma forma de mensagem dos outros erros.
+    @ExceptionHandler(AcessoNegadoException.class)
+    public ResponseEntity<Map<String, String>> tratarAcessoNegado(AcessoNegadoException ex) {
+        Map<String, String> corpo = new HashMap<>();
+        corpo.put("erro", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(corpo);
+    }
 }

@@ -48,14 +48,20 @@ public class IaClassificacaoService {
         );
     }
 
+    // OBS: cada trecho retornado aqui precisa ser um pedaco do NOME real da
+    // categoria no banco (ver dados_iniciais.sql), senao o filtro por
+    // "contains" abaixo nunca acha a categoria certa e cai no fallback (a
+    // primeira categoria em ordem alfabetica) - era o que acontecia antes
+    // com buraco/lixo/transito.
     private String achaTrechoCategoriaPorTexto(String texto) {
-        if (contemAlguma(texto, "poste", "luz", "ilumina", "lampada", "lâmpada")) return "ilumina";
-        if (contemAlguma(texto, "buraco", "asfalto", "calcada", "calçada", "pavimenta", "via")) return "pavimenta";
-        if (contemAlguma(texto, "lixo", "entulho", "descarte", "limpeza")) return "limp";
-        if (contemAlguma(texto, "arvore", "árvore", "poda", "galho")) return "arboriz";
-        if (contemAlguma(texto, "esgoto", "vazamento", "agua", "água", "saneamento")) return "saneamento";
-        if (contemAlguma(texto, "barulho", "som alto", "perturba")) return "sonora";
-        return "";
+        if (contemAlguma(texto, "poste", "luz", "ilumina", "lampada", "lâmpada")) return "ilumina"; // Iluminacao Publica
+        if (contemAlguma(texto, "buraco", "asfalto", "calcada", "calçada", "via")) return "buraco"; // Buraco na Via
+        if (contemAlguma(texto, "lixo", "entulho", "descarte", "limpeza")) return "lixo"; // Coleta de Lixo
+        if (contemAlguma(texto, "arvore", "árvore", "poda", "galho", "praca", "praça")) return "arboriz"; // Arborizacao e Pracas
+        if (contemAlguma(texto, "esgoto", "vazamento", "agua", "água", "saneamento")) return "saneamento"; // Saneamento e Esgoto
+        if (contemAlguma(texto, "semaforo", "semáforo", "sinaliza", "placa", "transito", "trânsito", "faixa de pedestre"))
+            return "sinaliza"; // Sinalizacao e Transito
+        return "outros"; // cai na categoria "Outros" em vez de sortear a primeira em ordem alfabetica
     }
 
     private String achaPrioridadePorTexto(String texto) {

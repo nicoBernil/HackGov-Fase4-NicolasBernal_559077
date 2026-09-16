@@ -256,3 +256,124 @@ body {
   color: var(--texto-suave);
   margin-top: 2px;
 }
+
+/* -------------------- Acoes do gestor (Parte 4/5) -------------------- */
+.acoes-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.select-status {
+  padding: 6px 8px;
+  border: 1px solid var(--borda);
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-family: inherit;
+}
+
+.botao-pequeno {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--azul);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.botao-pequeno:hover { background: var(--azul-escuro); }
+.botao-pequeno:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.botao-pequeno-secundario {
+  background: transparent;
+  color: var(--azul);
+  border: 1px solid var(--azul);
+}
+.botao-pequeno-secundario:hover { background: var(--azul-claro); }
+
+.historico-linha {
+  background: var(--azul-claro);
+}
+
+.historico-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.historico-item {
+  font-size: 13px;
+  border-left: 3px solid var(--azul);
+  padding: 4px 10px;
+}
+
+.historico-obs {
+  font-size: 12px;
+  color: var(--texto-suave);
+  margin-top: 2px;
+}
+
+/* -------------------- Relatorios estatisticos (Parte 4) -------------------- */
+.grade-relatorios {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.relatorio-titulo {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grafico-barras {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barra-linha {
+  display: grid;
+  grid-template-columns: 90px 1fr 28px;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.barra-rotulo {
+  color: var(--texto);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra-fundo {
+  background: var(--azul-claro);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.barra-preenchida {
+  background: var(--azul);
+  height: 100%;
+  border-radius: 999px;
+}
+
+.barra-valor {
+  text-align: right;
+  font-weight: 600;
+  color: var(--texto-suave);
+}
+
+@media (max-width: 760px) {
+  .grade-relatorios { grid-template-columns: 1fr; }
+}

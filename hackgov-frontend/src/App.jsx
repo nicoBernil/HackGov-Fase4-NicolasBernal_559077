@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { cadastrar, login } from './api/hackgovApi'
+import { cadastrar, login, definirSessao, limparSessao } from './api/hackgovApi'
 import AreaCidadao from './pages/AreaCidadao'
 import AreaGestor from './pages/AreaGestor'
 
@@ -45,6 +45,9 @@ function App() {
     setCarregando(true)
     try {
       const logado = await login({ email: emailLogin, senha: senhaLogin })
+      // A partir daqui, toda chamada ao backend manda o ID desse usuario no
+      // cabecalho X-Usuario-Id, para o controle de acesso da Parte 5.
+      definirSessao(logado)
       setUsuario(logado)
       setSenhaLogin('')
     } catch (erro) {
@@ -55,6 +58,7 @@ function App() {
   }
 
   function sair() {
+    limparSessao()
     setUsuario(null)
     setEmailLogin(''); setSenhaLogin('')
     limparMensagem()
