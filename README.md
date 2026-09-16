@@ -4,7 +4,7 @@
 
 **Autor:** Nicolas Bernal — RM 559077
 **Cidade:** Rio de Janeiro
-**Projeto:** Enterprise Challenge — HackGov — FIAP, Fase 4
+**Projeto:** Enterprise Challenge — HackGov — FIAP, Fase 5
 
 ---
 
@@ -145,8 +145,6 @@ spring.datasource.password=<sua_senha>
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 ```
 
-> ⚠️ **Nunca commite credenciais reais no Git.** Em um ambiente real, mova esses valores para variáveis de ambiente.
-
 ### 4. Rodar o backend
 
 ```bash
@@ -211,12 +209,6 @@ Apenas a "impressão digital técnica" (hash) da transição seria registrada �
 | `STATUS_SOLICITACAO` | Etapas do fluxo (Recebido, Em Análise, Em Andamento, Concluído) |
 | `SOLICITACAO` | A ocorrência em si (protocolo, título, descrição, endereço, prioridade, categoria, status, cidadão) |
 | `HISTORICO_STATUS` | Log de cada mudança de status, com o gestor responsável e observação |
-
----
-
-## 🎥 Vídeo Pitch
-
-Assista à demonstração funcional do projeto: **[link do vídeo pitch]**
 
 ---
 
