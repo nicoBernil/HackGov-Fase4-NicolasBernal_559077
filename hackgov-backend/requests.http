@@ -50,3 +50,18 @@ Content-Type: application/json
   "email": "email-invalido",
   "senha": "123"
 }
+
+### 9) IA - verificar se ja existe solicitacao parecida (deteccao de duplicadas)
+### Troque o X-Usuario-Id pelo id do usuario logado (veja a resposta do login).
+POST http://localhost:8080/api/solicitacoes/verificar-duplicidade
+Content-Type: application/json
+X-Usuario-Id: 2
+
+{
+  "titulo": "Cratera no asfalto",
+  "descricao": "Buracos no asfalto perto do numero 120, perigoso para motos.",
+  "logradouro": "R. das Flores 118",
+  "bairro": "Centro",
+  "cidade": "Rio de Janeiro",
+  "idCategoria": 1
+}

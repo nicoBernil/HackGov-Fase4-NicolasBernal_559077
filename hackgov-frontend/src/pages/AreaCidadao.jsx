@@ -4,6 +4,7 @@ import {
   criarSolicitacao,
   listarSolicitacoesDoCidadao,
   classificarComIa,
+  verificarDuplicidade,
 } from '../api/hackgovApi'
 
 function AreaCidadao({ usuario, aoSair }) {
@@ -26,6 +27,9 @@ function AreaCidadao({ usuario, aoSair }) {
   // NOVO: sugestao de categoria + prioridade dada pela IA a partir da descricao
   const [sugestaoIa, setSugestaoIa] = useState(null)
   const [classificando, setClassificando] = useState(false)
+
+  // NOVO (Fase 5): solicitacoes abertas parecidas no mesmo bairro (possiveis duplicadas)
+  const [similares, setSimilares] = useState([])
 
   // Estado de validacao inline: um erro de texto por campo, indexado pelo nome do campo
   const [erros, setErros] = useState({})
@@ -56,6 +60,7 @@ function AreaCidadao({ usuario, aoSair }) {
     try {
       const sugestao = await classificarComIa(descricao)
       setSugestaoIa(sugestao)
+      checarDuplicidade(sugestao.idCategoriaSugerida || idCategoria)
       if (sugestao.idCategoriaSugerida) {
         setIdCategoria(String(sugestao.idCategoriaSugerida))
         if (erros.idCategoria) {
@@ -71,6 +76,31 @@ function AreaCidadao({ usuario, aoSair }) {
       setSugestaoIa(null)
     } finally {
       setClassificando(false)
+    }
+  }
+
+  // NOVO (Fase 5): procura solicitacoes abertas parecidas no mesmo bairro.
+  // Roda quando o cidadao sai dos campos de descricao ou endereco (onBlur),
+  // so quando ja tem o minimo preenchido. Recebe a categoria como parametro
+  // porque, logo apos a IA sugerir uma, o estado ainda nao foi atualizado.
+  async function checarDuplicidade(categoriaAtual = idCategoria) {
+    if (descricao.trim().length < 10 || !bairro.trim() || !cidade.trim()) {
+      setSimilares([])
+      return
+    }
+    try {
+      const encontradas = await verificarDuplicidade({
+        titulo,
+        descricao,
+        logradouro,
+        bairro,
+        cidade,
+        idCategoria: categoriaAtual ? Number(categoriaAtual) : null,
+      })
+      setSimilares(encontradas)
+    } catch {
+      // A checagem e so um aviso: se falhar, o cidadao continua normalmente.
+      setSimilares([])
     }
   }
 
@@ -144,6 +174,7 @@ function AreaCidadao({ usuario, aoSair }) {
       setLogradouro(''); setBairro(''); setCidade('')
       setErros({})
       setSugestaoIa(null)
+      setSimilares([])
       recarregarLista()
     } catch (erro) {
       setMensagem({ tipo: 'erro', texto: erro.message })
@@ -232,6 +263,7 @@ function AreaCidadao({ usuario, aoSair }) {
                 placeholder="Rua, avenida..."
                 value={logradouro}
                 onChange={atualizarCampo(setLogradouro, 'logradouro')}
+                onBlur={() => checarDuplicidade()}
                 className={erros.logradouro ? 'campo-invalido' : ''}
               />
               {erros.logradouro && <span className="erro-campo">{erros.logradouro}</span>}
@@ -243,6 +275,7 @@ function AreaCidadao({ usuario, aoSair }) {
                     type="text"
                     value={bairro}
                     onChange={atualizarCampo(setBairro, 'bairro')}
+                    onBlur={() => checarDuplicidade()}
                     className={erros.bairro ? 'campo-invalido' : ''}
                   />
                   {erros.bairro && <span className="erro-campo">{erros.bairro}</span>}
@@ -253,11 +286,38 @@ function AreaCidadao({ usuario, aoSair }) {
                     type="text"
                     value={cidade}
                     onChange={atualizarCampo(setCidade, 'cidade')}
+                    onBlur={() => checarDuplicidade()}
                     className={erros.cidade ? 'campo-invalido' : ''}
                   />
                   {erros.cidade && <span className="erro-campo">{erros.cidade}</span>}
                 </div>
               </div>
+
+              {similares.length > 0 && (
+                <div className="aviso-duplicada">
+                  <strong>⚠️ Esse problema pode já ter sido relatado.</strong>
+                  <p>
+                    Encontramos {similares.length === 1 ? 'uma solicitação aberta parecida' : `${similares.length} solicitações abertas parecidas`} neste
+                    bairro. Se for o mesmo caso, ele já está na fila de atendimento.
+                  </p>
+                  <ul>
+                    {similares.map((s) => (
+                      <li key={s.id}>
+                        <span className="aviso-duplicada-percentual">{s.similaridadePercentual}%</span>
+                        <div>
+                          <strong>{s.protocolo}</strong> — {s.titulo}
+                          <div className="aviso-duplicada-meta">
+                            {s.logradouro}, {s.bairro} &middot; {s.status} &middot; aberta em {s.dataAbertura}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="aviso-duplicada-rodape">
+                    É um problema diferente? Você pode registrar normalmente.
+                  </p>
+                </div>
+              )}
 
               <button className="botao" onClick={enviar} disabled={enviando}>
                 {enviando ? 'Enviando...' : 'Registrar solicitacao'}

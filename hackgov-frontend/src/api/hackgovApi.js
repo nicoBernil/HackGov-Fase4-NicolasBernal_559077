@@ -114,6 +114,12 @@ export function classificarComIa(descricao) {
   return enviarPost("/solicitacoes/classificar-ia", { descricao });
 }
 
+// NOVO (Fase 5): procura solicitacoes abertas parecidas no mesmo bairro,
+// para avisar o cidadao antes de ele registrar uma reclamacao repetida.
+export function verificarDuplicidade(dados) {
+  return enviarPost("/solicitacoes/verificar-duplicidade", dados);
+}
+
 // Cria uma nova solicitacao.
 export function criarSolicitacao(dados) {
   return enviarPost("/solicitacoes", dados);

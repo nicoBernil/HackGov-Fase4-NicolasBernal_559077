@@ -4,7 +4,8 @@
 
 **Autor:** Nicolas Bernal — RM 559077
 **Cidade:** Rio de Janeiro
-**Projeto:** Enterprise Challenge — HackGov — FIAP, Fase 5
+**Projeto:** Enterprise Challenge — HackGov — FIAP
+**Vídeo (pitch + demonstração):** _inserir o link do YouTube (não listado)_
 
 ---
 
@@ -86,8 +87,11 @@ hackgov/
 │   │   └── HackgovApplication.java
 │   ├── src/main/resources/
 │   │   ├── db/
-│   │   │   ├── schema.sql        # cria tabelas e sequences
-│   │   │   └── dados_iniciais.sql # popula categorias e status
+│   │   │   ├── schema.sql                   # cria tabelas e sequences
+│   │   │   ├── dados_iniciais.sql           # popula categorias e status
+│   │   │   ├── dados_teste_estatisticas.sql # 20 solicitações de teste
+│   │   │   ├── consultas_analiticas.sql     # 6 consultas analíticas (GROUP BY, subconsultas, funções analíticas)
+│   │   │   └── otimizacao_indices.sql       # 5 índices de otimização
 │   │   └── application.properties
 │   ├── requests.http             # coleção de requisições para testar a API
 │   └── pom.xml
@@ -178,6 +182,33 @@ A triagem de ocorrências combina:
 2. **Cálculo de prioridade** — heurística baseada na presença de gatilhos textuais associados a urgência (ex.: *"risco"*, *"acidente"*, *"perigo"*) no relato do cidadão.
 
 Mais detalhes técnicos e trechos de código estão em [`docs/evidencias-tecnicas.md`](./docs/evidencias-tecnicas.md).
+
+---
+
+## 🆕 Nesta etapa: IA, dados e algoritmos
+
+### Detecção de reclamações duplicadas (IA)
+
+Antes de o cidadão enviar uma solicitação, o sistema compara o texto e o endereço com as solicitações **abertas do mesmo bairro** e avisa se o problema já foi relatado (protocolo, título, status e % de semelhança).
+
+- **Técnica:** processamento de linguagem natural, 100% local (sem API externa): normalização do texto, **TF-IDF + similaridade do cosseno**, semelhança da rua (Jaccard) e da categoria. Nota = 70% texto + 20% rua + 10% categoria; avisa a partir de 45%.
+- **Backend:** `service/DeteccaoDuplicidadeService.java` e o endpoint `POST /api/solicitacoes/verificar-duplicidade` (exige login; não devolve nome nem descrição de outros cidadãos).
+- **Frontend:** aviso no formulário em `pages/AreaCidadao.jsx`.
+- **Testes:** `src/test/.../DeteccaoDuplicidadeServiceTest.java` (rodar com `mvn test`, não precisa do Oracle).
+
+### Análise com SQL e otimização
+
+- `db/consultas_analiticas.sql`: 6 consultas (visão por categoria, ranking de bairros, categorias mais lentas que a média, solicitações atrasadas, gargalos do fluxo e matriz bairro × prioridade) usando `GROUP BY`, subconsultas (inclusive correlacionada) e funções analíticas (`RATIO_TO_REPORT`, `RANK`, `LEAD`, `ROLLUP`).
+- `db/otimizacao_indices.sql`: índices B-tree nas chaves estrangeiras e colunas de busca, levando as consultas mais frequentes de O(n) para O(log n).
+
+### Estruturas de dados
+
+| Uso no HackGov | Estrutura | Complexidade |
+|---|---|---|
+| Painel do gestor ordenado por prioridade | Fila de prioridade (heap) | O(n log n) |
+| "Desfazer" a última mudança de status | Pilha (`ArrayDeque`) | O(1) por operação |
+| Comparação de textos na IA | `HashMap` / `HashSet` | O(1) por palavra, em média |
+| Índices do banco | Árvore B | O(log n) |
 
 ---
 

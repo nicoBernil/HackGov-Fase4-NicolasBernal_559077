@@ -8,12 +8,15 @@ import br.com.fiap.hackgov.dto.HistoricoStatusResponse;
 import br.com.fiap.hackgov.dto.NovaSolicitacaoRequest;
 import br.com.fiap.hackgov.dto.EstatisticasResponse;
 import br.com.fiap.hackgov.dto.SolicitacaoResponse;
+import br.com.fiap.hackgov.dto.SolicitacaoSimilarResponse;
 import br.com.fiap.hackgov.dto.StatusResponse;
+import br.com.fiap.hackgov.dto.VerificarDuplicidadeRequest;
 import br.com.fiap.hackgov.exception.AcessoNegadoException;
 import br.com.fiap.hackgov.model.Perfil;
 import br.com.fiap.hackgov.model.Usuario;
 import br.com.fiap.hackgov.security.AutorizacaoInterceptor;
 import br.com.fiap.hackgov.security.ExigePerfil;
+import br.com.fiap.hackgov.service.DeteccaoDuplicidadeService;
 import br.com.fiap.hackgov.service.SolicitacaoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -38,9 +41,12 @@ import java.util.List;
 public class SolicitacaoController {
 
     private final SolicitacaoService solicitacaoService;
+    private final DeteccaoDuplicidadeService deteccaoDuplicidadeService;
 
-    public SolicitacaoController(SolicitacaoService solicitacaoService) {
+    public SolicitacaoController(SolicitacaoService solicitacaoService,
+                                 DeteccaoDuplicidadeService deteccaoDuplicidadeService) {
         this.solicitacaoService = solicitacaoService;
+        this.deteccaoDuplicidadeService = deteccaoDuplicidadeService;
     }
 
     // GET /api/categorias  -> lista as categorias (para o formulario). Publica:
@@ -63,6 +69,15 @@ public class SolicitacaoController {
     @PostMapping("/solicitacoes/classificar-ia")
     public ResponseEntity<ClassificacaoIaResponse> classificarComIa(@Valid @RequestBody DescricaoRequest dados) {
         return ResponseEntity.ok(solicitacaoService.classificarComIa(dados.descricao()));
+    }
+
+    // POST /api/solicitacoes/verificar-duplicidade -> IA (Fase 5): procura
+    // solicitacoes ABERTAS parecidas no mesmo bairro antes de o cidadao
+    // registrar uma nova. So consulta, nao grava nada. Exige login (passa pelo
+    // interceptor), mas nao devolve dado pessoal de outros cidadaos.
+    @PostMapping("/solicitacoes/verificar-duplicidade")
+    public List<SolicitacaoSimilarResponse> verificarDuplicidade(@Valid @RequestBody VerificarDuplicidadeRequest dados) {
+        return deteccaoDuplicidadeService.buscarSimilares(dados);
     }
 
     // POST /api/solicitacoes  -> cria uma nova solicitacao.
