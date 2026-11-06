@@ -1,0 +1,21 @@
+protocolo,titulo,bairro,prioridade,prioridade_num,categoria,status,status_ordem,dias_aberta,dias_para_concluir,tam_descricao
+HGSEED0001,Buraco profundo com risco de acidente,Centro,ALTA,3,buraco,concluido,4,12,10,68
+HGSEED0002,Buraco pequeno na calcada da praca,Jardim das Flores,BAIXA,1,buraco,concluido,4,20,2,56
+HGSEED0003,Buraco na rua perto da escola,Vila Nova,MEDIA,2,buraco,andamento,3,5,,42
+HGSEED0004,Poste apagado ha dias,Centro,MEDIA,2,ilumina,concluido,4,9,3,59
+HGSEED0005,Fiacao exposta em poste,Vila Nova,ALTA,3,ilumina,concluido,4,7,6,68
+HGSEED0006,Lampada piscando,Jardim das Flores,BAIXA,1,ilumina,recebido,1,1,,55
+HGSEED0007,Lixo acumulado ha semanas,Centro,ALTA,3,lixo,concluido,4,15,11,69
+HGSEED0008,Caminhao de lixo nao passou,Vila Nova,MEDIA,2,lixo,analise,2,3,,52
+HGSEED0009,Entulho de obra na calcada,Jardim das Flores,MEDIA,2,lixo,concluido,4,10,3,42
+HGSEED0010,Vazamento de esgoto a ceu aberto,Centro,ALTA,3,saneamento,andamento,3,4,,67
+HGSEED0011,Vazamento de agua na rua,Vila Nova,MEDIA,2,saneamento,concluido,4,8,3,37
+HGSEED0012,Cheiro forte de esgoto,Jardim das Flores,MEDIA,2,saneamento,recebido,1,2,,37
+HGSEED0013,Galho podre prestes a cair,Centro,ALTA,3,arboriz,concluido,4,6,5,74
+HGSEED0014,Poda apenas estetica,Vila Nova,BAIXA,1,arboriz,recebido,1,1,,50
+HGSEED0015,Praca com mato alto,Jardim das Flores,MEDIA,2,arboriz,analise,2,4,,55
+HGSEED0016,Semaforo quebrado,Centro,ALTA,3,transito,concluido,4,5,4,68
+HGSEED0017,Placa de sinalizacao caida,Vila Nova,MEDIA,2,transito,andamento,3,3,,49
+HGSEED0018,Faixa de pedestre apagada,Jardim das Flores,BAIXA,1,transito,recebido,1,2,,59
+HGSEED0019,Sujeira em terreno baldio,Centro,MEDIA,2,outros,concluido,4,11,5,62
+HGSEED0020,Reclamacao diversa de manutencao,Vila Nova,BAIXA,1,outros,recebido,1,1,,53

@@ -1,0 +1,18 @@
+A) prioridade x dias para concluir (concluidas)
+  n=10  Pearson r=0.688 (p=0.028)  Spearman rho=0.827 (p=0.003)
+  regressao: y = -2.000 + 3.000x   R2=0.474
+
+  previsao BAIXA: 1.0 dias
+  previsao MEDIA: 4.0 dias
+  previsao ALTA: 7.0 dias
+
+B) dias em aberto x etapa do fluxo (abertas)
+  n=10  Pearson r=0.863 (p=0.001)  Spearman rho=0.874 (p=0.001)
+  regressao: y = 0.359 + 0.554x   R2=0.744
+
+  paradas (>= 0,5 etapa atras do esperado): ['HGSEED0015'] 
+
+C) tamanho da descricao x prioridade (todas)
+  n=20  Pearson r=0.532 (p=0.016)  Spearman rho=0.572 (p=0.008)
+  regressao: y = 0.002 + 0.037x   R2=0.283
+

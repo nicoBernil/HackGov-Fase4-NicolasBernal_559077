@@ -146,6 +146,12 @@ export function buscarEstatisticas() {
   return buscarGet("/estatisticas");
 }
 
+// NOVO (Visao de Futuro - Parte 3): correlacao e regressao sobre os dados
+// das solicitacoes (prazo previsto por prioridade e solicitacoes paradas).
+export function buscarAnaliseEstatistica() {
+  return buscarGet("/estatisticas/avancadas");
+}
+
 // NOVO: gestor altera o status de uma solicitacao (fica registrado no historico).
 export function alterarStatusSolicitacao(idSolicitacao, dados) {
   return enviarPatch("/solicitacoes/" + idSolicitacao + "/status", dados);

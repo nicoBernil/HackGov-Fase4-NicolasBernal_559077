@@ -7,6 +7,7 @@ import {
   listarHistoricoSolicitacao,
   buscarEstatisticas,
 } from '../api/hackgovApi'
+import AnaliseEstatistica from './AnaliseEstatistica'
 
 // Mapeia cada nivel de prioridade para uma classe CSS (cor do badge)
 const CLASSE_PRIORIDADE = {
@@ -225,6 +226,9 @@ function AreaGestor({ usuario, aoSair }) {
             </div>
           )}
         </section>
+
+        {/* Correlacao e regressao (Visao de Futuro - Parte 3) */}
+        <AnaliseEstatistica atualizarCom={estatisticas} />
 
         <section className="cartao">
           <p className="eyebrow">Demandas recebidas</p>

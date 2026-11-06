@@ -427,3 +427,39 @@ body {
 @media (max-width: 760px) {
   .grade-relatorios { grid-template-columns: 1fr; }
 }
+
+/* ---------- Analise estatistica (Visao de Futuro - Parte 3) ---------- */
+.analise-cartao {
+  border: 1px solid var(--borda);
+  border-radius: 10px;
+  padding: 16px;
+}
+.analise-numeros { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.analise-r { font-size: 22px; font-weight: 700; color: var(--azul); }
+.analise-r-forte { color: var(--azul-escuro); }
+.analise-meta { font-size: 12.5px; color: var(--texto-suave); }
+.analise-forca { margin: 6px 0 4px; font-size: 13px; font-weight: 600; text-transform: capitalize; }
+.analise-equacao {
+  margin: 0 0 8px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  color: var(--texto-suave);
+  background: var(--azul-claro);
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+.analise-leitura { margin: 0; font-size: 13.5px; }
+.analise-decisao { grid-template-columns: 1fr 2fr; margin-top: 24px; }
+.analise-paradas ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.analise-paradas li {
+  border-left: 3px solid var(--vermelho);
+  background: var(--vermelho-fundo);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.analise-paradas li .analise-meta { display: block; margin-top: 2px; }
+
+@media (max-width: 760px) {
+  .analise-decisao { grid-template-columns: 1fr; }
+}
